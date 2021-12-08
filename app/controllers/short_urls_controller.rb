@@ -1,5 +1,4 @@
 class ShortUrlsController < ApplicationController
-
   # Since we're working on an API, we don't have authenticity tokens
   skip_before_action :verify_authenticity_token
 
@@ -21,6 +20,14 @@ class ShortUrlsController < ApplicationController
   end
 
   def show
+    short_url = ShortUrl.find_by_short_code(short_url_params[:id])
+
+    if short_url
+      ShortUrl.increment_counter(:click_count, short_url.id)
+      redirect_to short_url.full_url
+    else
+      head :not_found
+    end
   end
 
   private
