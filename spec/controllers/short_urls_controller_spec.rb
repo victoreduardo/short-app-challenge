@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe ShortUrlsController, type: :controller do
-
   let(:parsed_response) { JSON.parse(response.body) }
 
   describe "index" do
-
     let!(:short_url) { ShortUrl.create(full_url: "https://www.test.rspec") }
 
     it "is a successful response" do
@@ -16,7 +14,7 @@ RSpec.describe ShortUrlsController, type: :controller do
     it "has a list of the top 100 urls" do
       get :index, format: :json
 
-      expect(parsed_response['urls']).to be_include(short_url.public_attributes)
+      expect(parsed_response['urls']).to be_include(short_url.as_json)
     end
 
   end
