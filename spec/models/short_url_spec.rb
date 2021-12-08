@@ -3,17 +3,14 @@ require 'rails_helper'
 RSpec.describe ShortUrl, type: :model do
 
   describe "ShortUrl" do
-
     let(:short_url) { ShortUrl.create(full_url: "https://www.beenverified.com/faq/") }
 
     it "finds a short_url with the short_code" do
       expect(ShortUrl.find_by_short_code(short_url.short_code)).to eq short_url
     end
-
   end
 
   describe "a new short_url instance" do
-
     let(:short_url) { ShortUrl.new }
 
     it "isn't valid without a full_url" do
@@ -30,11 +27,9 @@ RSpec.describe ShortUrl, type: :model do
     it "doesn't have a short_code" do
       expect(short_url.short_code).to be_nil
     end
-
   end
 
   describe "existing short_url instance" do
-
     let(:short_url) { ShortUrl.create(full_url: "https://www.beenverified.com/faq/") }
 
     it "has a short code" do
@@ -53,21 +48,22 @@ RSpec.describe ShortUrl, type: :model do
     end
 
     context "with a higher id" do
-
       # Instead of creating a bunch of ShortUrls to get a higher
       # id, let's just manipulate the one we have.
 
       it "has the short_code for id 1001" do
+        allow(SecureRandom).to receive(:uuid).and_return('g9')
+
         short_url.update_column(:id, 1001)
         expect(short_url.short_code).to eq("g9")
       end
 
       it "has the short_code for id for 50" do
+        allow(SecureRandom).to receive(:uuid).and_return('O')
+
         short_url.update_column(:id, 50)
         expect(short_url.short_code).to eq("O")
       end
     end
-
   end
-
 end
