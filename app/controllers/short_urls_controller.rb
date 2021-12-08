@@ -10,9 +10,22 @@ class ShortUrlsController < ApplicationController
   end
 
   def create
+    short_url = ShortUrl.new(short_url_params.except(:id))
+
+    if short_url.save
+      UpdateTitleJob.perform_later(short_url.id)
+      render json: { short_code: short_url.short_code }, status: :created
+    else
+      render json: { errors: short_url.errors.full_messages }
+    end
   end
 
   def show
   end
 
+  private
+
+  def short_url_params
+    params.permit(:id, :full_url)
+  end
 end
