@@ -2,12 +2,14 @@ class ShortUrl < ApplicationRecord
   CHARACTERS = [*'0'..'9', *'a'..'z', *'A'..'Z'].freeze
 
   validates :full_url, presence: true, uniqueness: true
+  validates :short_code, presence: true, uniqueness: true, length: { maximum: 255 }
 
   validate :validate_full_url
 
   before_validation :generate_short_code, on: :create
 
-  def short_code
+  def generate_short_code
+    self.short_code = SecureRandom.uuid[0..5] if full_url.present?
   end
 
   def update_title!
