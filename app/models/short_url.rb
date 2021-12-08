@@ -2,6 +2,7 @@ class ShortUrl < ApplicationRecord
   CHARACTERS = [*'0'..'9', *'a'..'z', *'A'..'Z'].freeze
 
   validates :full_url, presence: true, uniqueness: true
+  validates :click_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :short_code, presence: true, uniqueness: true, length: { maximum: 255 }
 
   validate :validate_full_url
